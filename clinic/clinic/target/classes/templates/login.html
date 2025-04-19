@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            border: solid 1px #8d8d8d;
+            padding: 20px;
+            border-radius: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container .heading {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: bolder;
+            text-align: center;
+        }
+
+        .form {
+            max-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form .btn-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form .btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-radius: 10px;
+            border: solid 1px #1034aa;
+            border-bottom: solid 1px #90c2ff;
+            background: linear-gradient(135deg, #0034de, #006eff);
+            color: #fff;
+            font-weight: bolder;
+            transition: all 0.2s ease;
+            box-shadow: 0px 2px 3px #000d3848, inset 0px 4px 5px #0070f0,
+                inset 0px -4px 5px #002cbb;
+            cursor: pointer;
+        }
+
+        .form .btn:active {
+            box-shadow: inset 0px 4px 5px #0070f0, inset 0px -4px 5px #002cbb;
+            transform: scale(0.995);
+        }
+
+        .input-field {
+            position: relative;
+        }
+
+        .input-field label {
+            position: absolute;
+            color: #8d8d8d;
+            pointer-events: none;
+            background-color: transparent;
+            left: 15px;
+            transform: translateY(0.6rem);
+            transition: all 0.3s ease;
+        }
+
+        .input-field input {
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: solid 1px #8d8d8d;
+            letter-spacing: 1px;
+            width: 85%;
+        }
+
+        .input-field input:focus,
+        .input-field input:valid {
+            outline: none;
+            border: solid 1px #0034de;
+        }
+
+        .input-field input:focus~label,
+        .input-field input:valid~label {
+            transform: translateY(-51%) translateX(-10px) scale(0.8);
+            background-color: #fff;
+            padding: 0px 5px;
+            color: #0034de;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border: none;
+            border-radius: 100px;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 10px;
+            color: #888;
+        }
+
+        .form-footer a {
+            color: #0000ff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background-color: #BF3131;
+            color: #fff;
+            padding: 10px;
+            border-radius: 3px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .logout-message{
+            background-color: #3F7D58;
+            color: #fff;
+            padding: 10px;
+            border-radius: 3px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div th:if="${param.error}">
+            <div class="error-message">
+                <p>Invalid Username or Password</p>
+            </div>
+        </div>
+
+        <div th:if="${param.logout}">
+            <div class="logout-message">
+                <p>Logout Successful!</p>
+            </div>
+        </div>
+
+        <div class="heading">Sign In to your account</div>
+
+        <form class="form" th:action="@{/login}" method="post" role="form" th:object="${user}">
+            <div class="input-field">
+                <input required type="email" th:field="*{email}" id="email" name="email" autocomplete="off" />
+                <label for="email">Email</label>
+            </div>
+        
+            <div class="input-field">
+                <input required type="password" th:field="*{password}" id="password" name="password" autocomplete="off" />
+                <label for="password">Password</label>
+            </div>
+        
+            <div class="btn-container">
+                <button class="btn" type="submit">Login</button>
+            </div>
+        
+            <div class="form-footer">
+                Don't have an account? <a th:href="@{/register}">Register here</a>.
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

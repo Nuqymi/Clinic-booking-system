@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Admin</title>
+</head>
+<body>
+    <h1>Add New Admin</h1>
+    <form action="/admin/add-admin" method="post">
+        <label>Email:</label>
+        <input type="email" name="email" required>
+        <br>
+        <label>Password:</label>
+        <input type="password" name="password" required>
+        <br>
+        <label>Full Name:</label>
+        <input type="text" name="fullname" required>
+        <br>
+        <button type="submit">Add Admin</button>
+    </form>
+    <br>
+    <a href="/admin/admin_dashboard">Back</a>
+</body>
+</html>

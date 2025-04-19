@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Appointments</title>
+    <style>
+        table {
+            width: 60%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Your Appointments</h2>
+
+    <!-- Show message if no appointments exist -->
+    <div th:if="${appointments.empty}">
+        <p>No appointments available.</p>
+    </div>
+
+    <!-- Display Appointments Table -->
+    <table th:unless="${appointments.empty}">
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Doctor</th>
+            <th>Base Fee (RM)</th>
+            <th>Extra Charge (After 5 PM) (RM)</th>
+            <th>Total Fee (RM)</th>
+        </tr>
+        <tr th:each="appointment : ${appointments}">
+            <td th:text="${appointment.day}"></td>
+            <td th:text="${appointment.time}"></td>
+            <td th:text="${appointment.doctor != null ? appointment.doctor.name : 'Not Assigned'}"></td>
+            <td>50.00</td> <!-- Base Fee -->
+            <td th:text="${appointment.fee > 50 ? '10.00' : '0.00'}"></td> <!-- Extra charge if applicable -->
+            <td th:text="${appointment.fee}"></td> <!-- Total Fee -->
+        </tr>
+    </table>
+
+    <br>
+    <a th:href="@{/home}">Return to Dashboard</a>
+</body>
+</html>
