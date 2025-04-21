@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Doctors</title>
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #007acc;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 70%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #007acc;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        td a {
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid #007acc;
+            transition: background-color 0.3s ease;
+        }
+
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007acc;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+    </style>
+</head>
+<body>
+    <h2>Doctor List</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="doc : ${doctors}">
+            <td th:text="${doc.name}"></td>
+            <td>
+                <a th:href="@{'/admin/edit-doctor/' + ${doc.id}}">Edit</a> |
+                <a th:href="@{'/admin/delete-doctor/' + ${doc.id}}" 
+                   onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+    </table>
+    <a href="/admin/admin_dashboard">Back</a>
+</body>
+</html>

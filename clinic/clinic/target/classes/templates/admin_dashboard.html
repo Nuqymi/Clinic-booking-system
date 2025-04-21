@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .dashboard {
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .dashboard_title {
+            font-size: 26px;
+            color: #007acc;
+            margin-bottom: 10px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            background-color: #007acc;
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+
+        .nav-links a:hover {
+            background-color: #005f99;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007acc;
+            color: white;
+        }
+
+        select, button {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .assigned-label {
+            color: green;
+            font-weight: bold;
+        }
+
+        #searchInput {
+            padding: 10px;
+            width: 80%;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <h1 class="dashboard_title">Admin Dashboard</h1>
+    <div class="nav-links">
+        <a th:href="@{/admin/add-admin}">Add New Admin</a>
+        <a th:href="@{/admin/view-admins}">View Admins</a>
+        <a th:href="@{/admin/add-doctor}">Add New Doctor</a>
+        <a th:href="@{/admin/view-doctors}">View Doctors</a>
+        <a th:href="@{/login}">Logout</a>
+    </div>
+</div>
+
+<h2>Appointments</h2>
+
+<!-- Search Input -->
+<input type="text" id="searchInput" onkeyup="liveSearch()" placeholder="Search appointments...">
+
+<table th:unless="${appointments.empty}" id="appointmentsTable">
+    <tr>
+        <th>User Email</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Doctor</th>
+        <th>Base Fee (RM)</th>
+        <th>Extra Charge (RM)</th>
+        <th>Total Fee (RM)</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="appointment : ${appointments}">
+        <form th:action="@{/admin/assign-doctor}" method="post">
+            <input type="hidden" name="appointmentId" th:value="${appointment.id}" />
+
+            <td th:text="${appointment.user != null ? appointment.user.email : 'Unknown'}"></td>
+            <td th:text="${appointment.day}"></td>
+            <td th:text="${appointment.time}"></td>
+
+            <td>
+                <select name="doctorId" required th:disabled="${appointment.doctor != null}">
+                    <option value="" disabled selected th:if="${appointment.doctor == null}">Select Doctor</option>
+                    <option th:each="doc : ${doctors}"
+                            th:value="${doc.id}"
+                            th:text="${doc.name}"
+                            th:selected="${appointment.doctor != null and appointment.doctor.id == doc.id}">
+                    </option>
+                </select>
+            </td>
+
+            <td>50.00</td>
+            <td th:text="${appointment.fee > 50 ? '10.00' : '0.00'}"></td>
+            <td th:text="${appointment.fee}"></td>
+
+            <td>
+                <button type="submit" th:if="${appointment.doctor == null}">Assign</button>
+                <span class="assigned-label" th:if="${appointment.doctor != null}">✔ Assigned</span>
+            </td>
+        </form>
+    </tr>
+</table>
+
+<p th:if="${appointments.empty}">No appointments available.</p>
+
+<script>
+    function liveSearch() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('appointmentsTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            let match = false;
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j]) {
+                    if (cells[j].innerText.toLowerCase().includes(filter)) {
+                        match = true;
+                        break;
+                    }
+                }
+            }
+            rows[i].style.display = match ? '' : 'none';
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Doctor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+        }
+
+        form {
+            margin: 50px auto;
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        input[type="text"], button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #005f99;
+        }
+    </style>
+</head>
+<body>
+    <h2>Add New Doctor</h2>
+    <a href="/admin/admin_dashboard">Back</a>
+    <form th:action="@{/admin/add-doctor}" th:object="${doctor}" method="post">
+        <input type="text" th:field="*{name}" placeholder="Doctor Name" required />
+        <button type="submit">Add Doctor</button>
+    </form>
+</body>
+</html>
